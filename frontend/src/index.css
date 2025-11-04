@@ -54,6 +54,98 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
+/* global.css or SignUpPage.css */
+
+.login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: linear-gradient(135deg, #1f2937, #111827);
+  padding: 1rem;
+}
+
+.login-box {
+  background-color: #1f2937; /* Slightly lighter than background */
+  padding: 2.5rem 2rem;
+  border-radius: 1rem;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.login-box:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6);
+}
+
+.login-box h1 {
+  color: #ffffff;
+  font-size: 2.5rem;
+  font-weight: 700;
+  margin-bottom: 0.25rem;
+  text-align: center;
+}
+
+.subtitle {
+  color: #9ca3af; /* Gray-400 */
+  font-size: 1rem;
+  text-align: center;
+  margin-bottom: 1.5rem;
+}
+
+.login-box .clerk-card {
+  border-radius: 0.75rem;
+  overflow: hidden;
+}
+
+.login-box .clerk-formButton-primary {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  font-weight: 500;
+  transition: background 0.2s ease;
+}
+
+.login-box .clerk-formField-input {
+  border-radius: 0.5rem;
+  padding: 0.5rem;
+  border: 1px solid #4b5563; /* Gray-600 */
+  background-color: #374151; /* Gray-700 */
+  color: #f9fafb; /* White */
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.login-box .clerk-formField-input:focus {
+  border-color: #3b82f6; /* Blue-500 */
+  outline: none;
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+
+.login-box a {
+  color: #3b82f6; /* Blue-500 */
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.login-box a:hover {
+  color: #60a5fa; /* Blue-400 */
+}
+
+@media (max-width: 480px) {
+  .login-box {
+    padding: 2rem 1rem;
+  }
+
+  .login-box h1 {
+    font-size: 2rem;
+  }
+}
+
+
 @media (prefers-color-scheme: light) {
   :root {
     color: #213547;

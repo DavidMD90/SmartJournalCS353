@@ -1,67 +1,38 @@
-import { useState } from 'react';
-import { AuthProvider, useAuth } from './context/AuthContext';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Login } from './components/Login';
-import { JournalForm } from './components/JournalForm';
-import { JournalList } from './components/JournalList';
-import { StatsAndAchievements } from './components/StatsAndAchievements';
+import { SignUpPage } from './pages/SignUp.tsx';
+import Dashboard from './pages/Dashboard';
+import { SignedIn, SignedOut, UserButton } from '@clerk/clerk-react';
 import './App.css';
-
-function AppContent() {
-  const { user, logout, isAuthenticated } = useAuth();
-  const [refreshTrigger, setRefreshTrigger] = useState(0);
-
-  const handleEntryCreated = () => {
-    setRefreshTrigger(prev => prev + 1);
-  };
-
-  if (!isAuthenticated || !user) {
-    return <Login />;
-  }
-
-  return (
-    <div className="app">
-      <header className="app-header">
-        <div className="header-content">
-          <h1>SmartJournal</h1>
-          <div className="user-info">
-            <span className="user-greeting">
-              Welcome, <strong>{user.username}</strong>
-            </span>
-            <button onClick={logout} className="btn-logout" title="Logout">
-              Logout
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <main className="app-main">
-        <div className="main-content">
-          <div className="left-column">
-            <JournalForm onEntryCreated={handleEntryCreated} />
-          </div>
-
-          <div className="right-column">
-            <StatsAndAchievements refreshTrigger={refreshTrigger} />
-            <JournalList refreshTrigger={refreshTrigger} />
-          </div>
-        </div>
-      </main>
-
-      <footer className="app-footer">
-        <p>SmartJournal - Track your gratitude journey</p>
-        <div className="debug-info">
-          <small>User ID: {user.id} | Backend: http://localhost:3000</small>
-        </div>
-      </footer>
-    </div>
-  );
-}
 
 function App() {
   return (
-    <AuthProvider>
-      <AppContent />
-    </AuthProvider>
+    <BrowserRouter>
+      <div className="clerk-header">
+        <SignedIn>
+          <UserButton afterSignOutUrl="/sign-in" />
+        </SignedIn>
+      </div>
+      
+      <Routes>
+        <Route path="/" element={<Dashboard />} />
+        <Route path="/sign-in" element={<Login />} />
+        <Route path="/sign-up" element={<SignUpPage />} />
+        <Route 
+          path="/dashboard" 
+          element={
+            <>
+              <SignedIn>
+                <Dashboard />
+              </SignedIn>
+              <SignedOut>
+                <Login />
+              </SignedOut>
+            </>
+          } 
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

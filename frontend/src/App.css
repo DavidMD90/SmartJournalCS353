@@ -335,6 +335,13 @@ button[type="submit"]:disabled {
   background: #fcc;
 }
 
+.clerk-header {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  z-index: 100;
+}
+
 /* Responsive */
 @media (max-width: 900px) {
   main {

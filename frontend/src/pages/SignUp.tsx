@@ -1,14 +1,16 @@
-import { SignIn } from "@clerk/clerk-react";
+import { SignUp } from "@clerk/clerk-react";
 import { dark } from "@clerk/themes";
 
-export function Login() {
+
+
+export function SignUpPage() {
   return (
     <div className="login-container">
       <div className="login-box">
         <h1>SmartJournal</h1>
-        <p className="subtitle">Please sign in to continue</p>
+        <p className="subtitle">Create your account</p>
         
-        <SignIn 
+        <SignUp 
           appearance={{
             baseTheme: dark,
             elements: {
@@ -27,9 +29,8 @@ export function Login() {
             },
           }}
           routing="path"
-          path="/sign-in"
-          signUpUrl="/sign-up"
-          afterSignInUrl="/"
+          path="/sign-up"
+          signInUrl="/sign-in"
           afterSignUpUrl="/"
         />
       </div>

@@ -1,11 +1,12 @@
 import 'dotenv/config';
-import express from 'express';
+import express, { Request, Response, NextFunction } from 'express';
 import cors from 'cors';
 import { testConnection, closePool } from './db/connection.js';
 import { initializeDatabase } from './db/helpers.js';
 import { errorHandler, notFoundHandler } from './middleware/errorHandler.js';
 import { requestLogger } from './middleware/requestLogger.js';
 import { logger } from './utils/logger.js';
+import { requireAuth, addUserIdToRequest } from './middleware/clerkAuth.js';
 import journalRoutes from './routes/journalRoutes.js';
 import userRoutes from './routes/userRoutes.js';
 import achievementRoutes from './routes/achievementRoutes.js';
@@ -19,20 +20,23 @@ app.use(cors());
 app.use(express.json());
 app.use(requestLogger);
 
-// API Routes
-app.use('/api', journalRoutes);
-app.use('/api', userRoutes);
-app.use('/api', achievementRoutes);
-app.use('/api', promptRoutes);
-
-// Health check endpoint
-app.get('/api/health', (_req, res) => {
+// API Routes with authentication
+// Health check endpoint (no auth required)
+app.get('/api/health', (_req: Request, res: Response) => {
   res.json({
     status: 'ok',
     timestamp: new Date().toISOString(),
     uptime: process.uptime(),
   });
 });
+
+// Protected routes
+app.use('/api/journal', requireAuth, addUserIdToRequest as any, journalRoutes);
+app.use('/api/users', requireAuth, addUserIdToRequest as any, userRoutes);
+app.use('/api/achievements', requireAuth, addUserIdToRequest as any, achievementRoutes);
+app.use('/api/prompts', requireAuth, addUserIdToRequest as any, promptRoutes);
+
+// Remove the duplicate health check endpoint since we already defined it above
 
 // Error handling middleware (must be last)
 app.use(notFoundHandler);
